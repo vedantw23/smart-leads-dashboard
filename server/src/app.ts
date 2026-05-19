@@ -9,6 +9,7 @@ import { leadRouter } from "./routes/lead.routes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const allowedOrigins = new Set([env.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"]);
+const isVercelOrigin = (origin: string): boolean => /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
 
 export const app = express();
 
@@ -16,7 +17,7 @@ app.use(helmet());
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.has(origin)) {
+      if (!origin || allowedOrigins.has(origin) || isVercelOrigin(origin)) {
         callback(null, true);
         return;
       }
