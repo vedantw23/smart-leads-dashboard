@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import { Download, LogOut, Moon, Plus, Search, Sun, Trash2, Pencil } from "lucide-react";
+﻿import { useEffect, useMemo, useState } from "react";
+import { Download, Moon, Plus, Search, Sun, Trash2, Pencil } from "lucide-react";
 import { Button } from "../components/Button";
 import { LeadForm } from "../components/LeadForm";
-import { useAuth } from "../context/AuthContext";
 import { useDebounce } from "../hooks/useDebounce";
 import { api } from "../lib/api";
 import type { Lead, LeadFilters, LeadSource, LeadStatus, Pagination } from "../types";
@@ -10,7 +9,6 @@ import type { Lead, LeadFilters, LeadSource, LeadStatus, Pagination } from "../t
 const defaultFilters: LeadFilters = { status: "", source: "", search: "", sort: "latest", page: 1 };
 
 export const Dashboard = () => {
-  const { user, logout } = useAuth();
   const [filters, setFilters] = useState(defaultFilters);
   const [searchInput, setSearchInput] = useState("");
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -96,7 +94,6 @@ export const Dashboard = () => {
             <button title="Toggle dark mode" onClick={() => setDarkMode((value) => !value)} className="grid h-10 w-10 place-items-center rounded-md border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <Button variant="secondary" onClick={logout}><LogOut size={16} />Logout</Button>
           </div>
         </div>
       </header>
@@ -166,7 +163,7 @@ export const Dashboard = () => {
                     <td className="px-4 py-4">
                       <div className="flex gap-2">
                         <button title="Edit lead" onClick={() => { setSelectedLead(lead); setIsFormOpen(true); }} className="grid h-9 w-9 place-items-center rounded-md border border-slate-300 dark:border-slate-700"><Pencil size={16} /></button>
-                        {user?.role === "admin" && <button title="Delete lead" onClick={() => removeLead(lead)} className="grid h-9 w-9 place-items-center rounded-md border border-red-200 text-coral dark:border-red-900"><Trash2 size={16} /></button>}
+                        <button title="Delete lead" onClick={() => removeLead(lead)} className="grid h-9 w-9 place-items-center rounded-md border border-red-200 text-coral dark:border-red-900"><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -176,7 +173,7 @@ export const Dashboard = () => {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-4 py-3 text-sm dark:border-slate-800">
-            <span>Page {pagination?.page ?? 1} of {pagination?.totalPages || 1} · {pagination?.total ?? 0} leads</span>
+            <span>Page {pagination?.page ?? 1} of {pagination?.totalPages || 1} Â· {pagination?.total ?? 0} leads</span>
             <div className="flex gap-2">
               <Button variant="secondary" disabled={!pagination?.hasPreviousPage} onClick={() => setFilters({ ...filters, page: filters.page - 1 })}>Previous</Button>
               <Button variant="secondary" disabled={!pagination?.hasNextPage} onClick={() => setFilters({ ...filters, page: filters.page + 1 })}>Next</Button>
@@ -187,3 +184,4 @@ export const Dashboard = () => {
     </main>
   );
 };
+

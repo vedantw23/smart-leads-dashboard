@@ -1,4 +1,4 @@
-import type { FilterQuery } from "mongoose";
+﻿import type { FilterQuery } from "mongoose";
 import type { Request, Response } from "express";
 import { Lead, type ILead } from "../models/Lead.js";
 import { AppError } from "../utils/AppError.js";
@@ -47,7 +47,7 @@ export const getLeadById = async (req: Request, res: Response): Promise<Response
 };
 
 export const createLead = async (req: Request, res: Response): Promise<Response> => {
-  const lead = await Lead.create({ ...req.body, owner: req.user?.userId });
+  const lead = await Lead.create({ ...req.body, owner: req.user?.userId || undefined });
   return sendSuccess(res, { lead }, "Lead created", 201);
 };
 
@@ -80,3 +80,4 @@ export const exportLeadsCsv = async (req: Request, res: Response): Promise<void>
   res.attachment(`leads-${Date.now()}.csv`);
   res.send(csv);
 };
+
